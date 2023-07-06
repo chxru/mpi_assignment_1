@@ -60,6 +60,20 @@ def plot_results():
     plt.savefig("results.png")
 
 
+def show_performance_gain():
+    # considering the sequential as the baseline
+    for i in INSTANCES:
+        print(f"Performance gain for {i} students")
+
+        base = RESULTS["sequential"][i]
+
+        for j in PARALLEL_PROCESSORS:
+            parallel = RESULTS["parallel"][(i, j)]
+            print(f"Performance gain with {j} processes: {base / parallel} times")
+
+        print("\n")
+
+
 def main():
     for i in INSTANCES:
         print(f"Running sequential for {i} students")
@@ -70,8 +84,7 @@ def main():
             print(f"Running parallel for {i} students and {j} processors")
             RESULTS["parallel"][(i, j)] = run_parallel(j, i)
 
-    print(RESULTS)
-
+    show_performance_gain()
     plot_results()
 
 
