@@ -19,6 +19,17 @@ def main():
     sendbuf = None
     padded_student_count = size - total_students % size
 
+    """
+    Why padding?
+
+    When using scatter or scatterv, if the number of elements in the send buffer is not divisble by the number of processes,
+    1. When dividing the buffer into equal parts, some buffers will have half of the data of an array while some other processor will receive the remaining half.
+    2. Last buffer will have less data than the other buffers, the remaining data will be filled with garbage values. This can be avoided by sending the expected number of elements to each process.
+
+    Solution:
+    Add empty elements to the array until the number of elements is divisible by the number of processes!
+    """
+
     if rank == 0:
         # generate the data
         generate_data(total_students)
